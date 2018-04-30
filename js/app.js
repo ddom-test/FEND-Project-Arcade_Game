@@ -6,6 +6,10 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+
+    this.xPos = x;
+    this.yPos = y;
+    this.speed = speed;
 };
 
 // Update the enemy's position, required method for game
