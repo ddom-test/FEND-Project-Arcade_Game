@@ -18,6 +18,17 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    if (this.xPos < 505) {
+
+      console.log("[Testing]: xPos value is ", xPos);
+      this.xPos = this.xPos + (this.speed * dt);
+    }
+
+    else {
+
+      this.xPos = 0;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
