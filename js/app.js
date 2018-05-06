@@ -1,5 +1,5 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -33,7 +33,7 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.xPos, this.yPos);
 };
 
 // Now write your own player class
@@ -48,7 +48,7 @@ var Player = function (x = 202, y = 390) {
 }
 
 Player.prototype.update = function () {
- 
+
   // See: engine.js
   // canvas.width = 505;
   // canvas.height = 606;
