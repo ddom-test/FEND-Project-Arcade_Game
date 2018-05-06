@@ -21,7 +21,7 @@ Enemy.prototype.update = function(dt) {
 
     if (this.xPos < 505) {
 
-      console.log("[Testing]: xPos value is ", xPos);
+      console.log("[Testing]: xPos value is ", this.xPos);
       this.xPos = this.xPos + (this.speed * dt);
     }
 
