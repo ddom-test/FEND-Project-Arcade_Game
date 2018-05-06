@@ -21,7 +21,7 @@ Enemy.prototype.update = function(dt) {
 
     if (this.xPos < 505) {
 
-      console.log("[Testing]: xPos value is ", this.xPos);
+      // console.log("[Testing]: xPos value is ", this.xPos);
       this.xPos = this.xPos + (this.speed * dt);
     }
 
@@ -60,8 +60,8 @@ Enemy.prototype.render = function() {
 // This class handles all the enemies logic (e.g., spawning)
 var Enemies = function(minSpeed = 50, maxSpeed = 100) {
 
-  this.minSpeed = 10;
-  this.maxSpeed = 20;
+  this.minSpeed = minSpeed;
+  this.maxSpeed = maxSpeed;
   this.yPositions = [60, 143, 226];
   this.num = this.yPositions.length;
 }
