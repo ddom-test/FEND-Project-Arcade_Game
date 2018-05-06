@@ -26,8 +26,7 @@ Enemy.prototype.update = function(dt) {
     }
 
     else {
-
-      this.xPos = 0;
+      this.xPos = -101;
     }
 };
 
@@ -35,6 +34,29 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.xPos, this.yPos);
 };
+
+// This class handles all the enemies logic (e.g., spawning)
+var Enemies = function(minSpeed = 50, maxSpeed = 150) {
+
+  this.minSpeed = 50;
+  this.maxSpeed = 100;
+  this.yPositions = [60, 143, 226];
+  this.num = this.yPositions.length;
+}
+
+Enemies.prototype.addEnemies = function () {
+
+  // Cloning 'this.yPositions'
+  var yPositions = this.yPositions.slice(0);
+
+  for (var i = 0; i < this.num; i++) {
+
+    var yPos = getRndValue(yPositions, true);
+    var speed = getRndInteger(this.minSpeed, this.maxSpeed);
+
+    allEnemies.push(new Enemy(-101, yPos, speed));
+  }
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -112,3 +134,24 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
+// This JavaScript function always returns a random number between min
+// (included) and max (excluded)
+
+// https://www.w3schools.com/js/js_random.asp
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+// This JavaScript function returns a random element from the array passed
+// to the function. If flag is true, the returned element will be deleted
+// from 'ls'
+function getRndValue(ls, flag = false) {
+
+  el = ls[Math.floor(Math.random() * ls.length)];
+
+  if (flag) ls.splice(ls.indexOf(el), 1);
+
+  return el;
+}
