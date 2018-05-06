@@ -28,6 +28,28 @@ Enemy.prototype.update = function(dt) {
     else {
       this.xPos = -101;
     }
+
+    this.checkCollisions(player.get_xPos(), player.get_yPos());
+};
+
+// Check for collision with the enemy
+Enemy.prototype.checkCollisions = function (xPos, yPos) {
+
+  var enemy_xPos = this.xPos;
+  var enemy_yPos = this.yPos;
+  var player_xPos = xPos;
+  var player_yPos = yPos;
+
+  // The enemy and the player are on the same row (y position can differ
+  // by 2px at most, due to the sprites positioning)
+  if( enemy_yPos - player_yPos === 2) {
+
+    // The enemy and the player overlap on the x-axis
+    if (player_xPos + 20 < enemy_xPos + 101 && player_xPos + 86 > enemy_xPos) {
+      // player.reset();
+      console.log("Game over!");
+    }
+  }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -36,10 +58,10 @@ Enemy.prototype.render = function() {
 };
 
 // This class handles all the enemies logic (e.g., spawning)
-var Enemies = function(minSpeed = 50, maxSpeed = 150) {
+var Enemies = function(minSpeed = 50, maxSpeed = 100) {
 
-  this.minSpeed = 50;
-  this.maxSpeed = 100;
+  this.minSpeed = 10;
+  this.maxSpeed = 20;
   this.yPositions = [60, 143, 226];
   this.num = this.yPositions.length;
 }
@@ -114,6 +136,16 @@ Player.prototype.handleInput = function (key) {
     case 'down': this.yPos += 83;
                  break;
   }
+}
+
+Player.prototype.get_xPos = function () {
+
+  return this.xPos;
+}
+
+Player.prototype.get_yPos = function () {
+
+  return this.yPos;
 }
 
 // Now instantiate your objects.
