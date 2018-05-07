@@ -127,7 +127,11 @@ Player.prototype.update = function () {
     this.xPos = 0;
   }
 
-  // Check if the player won the game
+  if(this.checkIfWin()) {
+
+    console.log("Victory!");
+    player.reset();
+  }
 };
 
 Player.prototype.render = function () {
@@ -163,6 +167,26 @@ Player.prototype.get_yPos = function () {
   return this.yPos;
 };
 
+Player.prototype.reset = function () {
+
+  this.xPos = 202;
+  this.yPos = 390;
+};
+
+Player.prototype.set_xPos = function (x) {
+
+  this.xPos = x;
+}
+
+Player.prototype.set_yPos = function (y) {
+
+  this.xPos = x;
+}
+
+Player.prototype.checkIfWin = function () {
+
+  return (this.get_yPos() < 0);
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
