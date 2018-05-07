@@ -29,8 +29,22 @@ Enemy.prototype.update = function(dt) {
       this.xPos = -101;
     }
 
-    this.checkCollisions(player.get_xPos(), player.get_yPos());
+    if (this.checkCollisions(player.get_xPos(), player.get_yPos())) player.reset();
 };
+
+// Sets the enemy's speed attribute
+Enemy.prototype.setSpeed = function (speed) {
+
+  this.speed = speed;
+}
+
+// Sets the enemy's speed attribute choosing randomly between
+// min_speed and max_speed
+Enemy.prototype.setRndSpeed = function (min_speed, max_speed) {
+
+  var speed = getRndInteger(min_speed, max_speed);
+  this.setSpeed(speed);
+}
 
 // Check for collision with the enemy
 Enemy.prototype.checkCollisions = function (xPos, yPos) {
@@ -45,9 +59,9 @@ Enemy.prototype.checkCollisions = function (xPos, yPos) {
   if( enemy_yPos - player_yPos === 2) {
 
     // The enemy and the player overlap on the x-axis
-    if (player_xPos + 20 < enemy_xPos + 101 && player_xPos + 86 > enemy_xPos) {
-      // player.reset();
-      console.log("Game over!");
+    if (player_xPos + 16 < enemy_xPos + 101 && player_xPos + 85 > enemy_xPos) {
+
+      return true;
     }
   }
 };
@@ -64,7 +78,7 @@ var Enemies = function(minSpeed = 50, maxSpeed = 100) {
   this.maxSpeed = maxSpeed;
   this.yPositions = [60, 143, 226];
   this.num = this.yPositions.length;
-}
+};
 
 Enemies.prototype.addEnemies = function () {
 
@@ -78,7 +92,8 @@ Enemies.prototype.addEnemies = function () {
 
     allEnemies.push(new Enemy(-101, yPos, speed));
   }
-}
+};
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -89,7 +104,7 @@ var Player = function (x = 202, y = 390) {
   this.sprite = 'images/char-boy.png';
   this.xPos = x;
   this.yPos = y;
-}
+};
 
 Player.prototype.update = function () {
 
@@ -113,12 +128,12 @@ Player.prototype.update = function () {
   }
 
   // Check if the player won the game
-}
+};
 
 Player.prototype.render = function () {
 
   ctx.drawImage(Resources.get(this.sprite), this.xPos, this.yPos);
-}
+};
 
 Player.prototype.handleInput = function (key) {
 
@@ -136,17 +151,18 @@ Player.prototype.handleInput = function (key) {
     case 'down': this.yPos += 83;
                  break;
   }
-}
+};
 
 Player.prototype.get_xPos = function () {
 
   return this.xPos;
-}
+};
 
 Player.prototype.get_yPos = function () {
 
   return this.yPos;
-}
+};
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
