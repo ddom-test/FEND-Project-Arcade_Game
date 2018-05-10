@@ -51,7 +51,7 @@ Enemy.prototype.setSpeed = function (speed) {
 // min_speed and max_speed
 Enemy.prototype.setRndSpeed = function (min_speed, max_speed) {
 
-  var speed = getRndInteger(min_speed, max_speed);
+  var speed = getRndInteger(min_speed, max_speed);console.log("Speed ", speed)
   this.setSpeed(speed);
 }
 
@@ -103,6 +103,27 @@ Enemies.prototype.addEnemies = function () {
   }
 };
 
+// This method increments the enemies max speed
+Enemies.prototype.incrSpeed = function () {
+
+  this.maxSpeed += (this.maxSpeed * 20/100 * game.level);
+
+  // Prevent 'maxSpeed' to be higher than 1100
+  if (this.maxSpeed > 1100) this.maxSpeed = 1100;
+
+  this.updateSpeed();
+};
+
+// This method updates the enemies speed
+// according to the new range
+Enemies.prototype.updateSpeed = function () {
+
+  for (var ind = 0; ind < allEnemies.length; ind++) {
+
+    allEnemies[ind].setRndSpeed(this.minSpeed, this.maxSpeed);
+  }
+};
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -139,6 +160,7 @@ Player.prototype.update = function () {
   if(this.checkIfWin()) {
 
     game.incrLevel(); // To the next level!
+    enemies.incrSpeed();
     player.reset(); // Resetting the player's position
   }
 };
