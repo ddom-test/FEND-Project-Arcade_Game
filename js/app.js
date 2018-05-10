@@ -1,3 +1,8 @@
+// Constants
+const CANVAS_WIDTH = 505;
+const CANVAS_HEIGHT = 606;
+const DANGER_ZONE_LIMIT = 307;
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -19,7 +24,7 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    if (this.xPos < 505) {
+    if (this.xPos < CANVAS_WIDTH) { // CANVAS_WIDTH = 505
 
       // console.log("[Testing]: xPos value is ", this.xPos);
       this.xPos = this.xPos + (this.speed * dt);
@@ -29,7 +34,11 @@ Enemy.prototype.update = function(dt) {
       this.xPos = -101;
     }
 
-    if (this.checkCollisions(player.get_xPos(), player.get_yPos())) player.reset();
+    if (this.checkCollisions(player.get_xPos(), player.get_yPos())) {
+
+      player.reset();   // Resets the player's position
+      game.decrLives(); // Decreases the player's lives
+    }
 };
 
 // Sets the enemy's speed attribute
@@ -129,8 +138,8 @@ Player.prototype.update = function () {
 
   if(this.checkIfWin()) {
 
-    console.log("Victory!");
-    player.reset();
+    game.incrLevel(); // To the next level!
+    player.reset(); // Resetting the player's position
   }
 };
 
@@ -154,6 +163,11 @@ Player.prototype.handleInput = function (key) {
 
     case 'down': this.yPos += 83;
                  break;
+
+                  // If the player presses the 'space' key, the game pauses
+                  // If he presses twice, the game resumes
+    case 'space': game.isPaused = game.isPaused ? false : true;
+                  break;
   }
 };
 
@@ -176,17 +190,108 @@ Player.prototype.reset = function () {
 Player.prototype.set_xPos = function (x) {
 
   this.xPos = x;
-}
+};
 
 Player.prototype.set_yPos = function (y) {
 
   this.xPos = x;
-}
+};
 
 Player.prototype.checkIfWin = function () {
 
   return (this.get_yPos() < 0);
+};
+
+
+// Handles all of the global game logic
+var Game = function() {
+
+  this.level = 1;
+  this.lives = 5;
+  this.score = 0;
+  this.bonus = 0;
+  this.isPaused = false;
+};
+
+// Updates the game status
+Game.prototype.update = function() {
+
+    game.showScoreboard(); // Shows the game scoreboard
+    game.over(); // Handles the end of the game
 }
+
+// Decrements the player's lives
+Game.prototype.decrLives = function () {
+
+  this.lives --;
+};
+
+// To the next game level!
+Game.prototype.incrLevel = function () {
+
+  this.level++;
+  this.updBonus();
+};
+
+// This method handles the player's score
+// When the player moves into the 'danger' zone (i.e., tiles crossed by the
+// enemy) its score increments every time he moves without hitting the enemy
+Game.prototype.incrScore = function (key) {
+
+  if (key === 'left' || key === 'right' || key === 'up' || key === 'down') {
+
+    if (player.yPos < DANGER_ZONE_LIMIT) this.score += (15 + this.bonus);
+  }
+};
+
+// Increments the bonus
+// The player receives a higher bonus according to the reached level
+Game.prototype.updBonus = function () {
+
+  this.bonus = this.level * 10;
+};
+
+// Handles the end of the game
+// When the game ends, displays a recap screen with the player's
+// score and level
+Game.prototype.over = function () {
+
+  if (this.lives < 1) {
+
+    game.isPaused = true;
+
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); // Cleaning the canvas
+
+    // Border?
+    // ctx.strokeStyle="#ededed";
+    // ctx.strokeRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    // ctx.font = "bold 3em serif";
+    // ctx.fillText("GAME OVER!!!", 75, 180);
+
+    ctx.drawImage(Resources.get('images/game-over.jpg'), 102, 5, 300, 300);
+
+    ctx.fillStyle = "black";
+    ctx.font = "bold 1.6em serif";
+    ctx.fillText("Your score is: " +this.score, 10, 300);
+    ctx.fillText("Best level: " +this.level, 10, 340);
+  }
+};
+
+// Shows the lives and the level on the game board
+Game.prototype.showScoreboard = function () {
+
+  ctx.fillStyle = '#919191';
+  ctx.font = "1.5em serif";
+  ctx.fillText('Level: ', 5, 30);
+  ctx.fillText('Lives: ', 160, 30);
+  ctx.fillText('Score: ', 330, 30);
+
+  ctx.font = "1.1em serif";
+  ctx.fillText(this.level, 85, 30);
+  ctx.fillText(this.lives, 245, 30);
+  ctx.fillText(this.score, 420, 30);
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -197,6 +302,7 @@ var enemies = new Enemies();
 enemies.addEnemies();
 
 var player = new Player();
+var game = new Game();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -205,10 +311,12 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32: 'space'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    game.incrScore((allowedKeys[e.keyCode]));
 });
 
 
