@@ -53,7 +53,7 @@ Enemy.prototype.setSpeed = function (speed) {
 // min_speed and max_speed
 Enemy.prototype.setRndSpeed = function (min_speed, max_speed) {
 
-  var speed = getRndInteger(min_speed, max_speed);console.log("Speed ", speed)
+  var speed = getRndInteger(min_speed, max_speed);
   this.setSpeed(speed);
 }
 
@@ -108,7 +108,7 @@ Enemies.prototype.addEnemies = function () {
     var yPos = getRndValue(yPositions, true);
     var speed = getRndInteger(this.minSpeed, this.maxSpeed);
 
-    allEnemies.push(new Enemy(-101, yPos, speed)); // <-----
+    allEnemies.push(new Enemy(-101, yPos, speed));
   }
 };
 
@@ -197,11 +197,10 @@ Player.prototype.handleInput = function (key) {
 
                   // If the player presses the 'space' key, the game pauses
                   // If he presses twice, the game resumes
-    case 'space': game.isPaused = game.isPaused ? false : true;
+    case 'pause': game.isPaused = game.isPaused ? false : true;
                   break;
 
     case 'restart': game.restart();
-                    allEnemies = [];
                     break;
   }
 };
@@ -339,9 +338,11 @@ Game.prototype.restart = function () {
 
   player.reset();
   enemies.resetSpeed();
+  allEnemies = [];
 
+  enemies.addEnemies();
   this.paused = false;
-}
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -362,7 +363,7 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        32: 'space',
+        32: 'pause',
         82: 'restart'
     };
 
