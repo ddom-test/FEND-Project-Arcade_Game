@@ -1,6 +1,34 @@
-frontend-nanodegree-arcade-game
-===============================
+# Memory Game Project
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+## Table of Contents
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+* [Installation](#installation)
+* [Gameplay](#gameplay)
+* [Version](#version)
+* [Contributing](#contributing)
+
+## Installation
+
+The game can be played on a normal web browser. Download the package and open the index.html file. Enjoy!
+
+## Gameplay
+
+The aim of the game is to get to the water without being hit by enemies.
+
+* The player begins with 5 lives. When they get to zero, the game ends.
+* As the level increases, the difficulty increases.
+* The player uses to keyboard to move his character up, down, left and right
+* The player can restart the game hitting the 'r' key on the keyboard
+* The game can be paused by pressing the space key
+
+The game ends once all cards have been correctly matched. <br/>
+
+
+## Version
+1.0
+
+## Contributing
+
+This repository is the starter code for _all_ Udacity students.
+
+For details, check out [Udacity's project repository](https://github.com/udacity/frontend-nanodegree-arcade-game).
