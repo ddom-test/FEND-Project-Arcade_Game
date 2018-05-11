@@ -2,6 +2,8 @@
 const CANVAS_WIDTH = 505;
 const CANVAS_HEIGHT = 606;
 const DANGER_ZONE_LIMIT = 307;
+const MIN_EN_SPEED = 50;
+const MAX_EN_SPEED = 100;
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
@@ -81,12 +83,19 @@ Enemy.prototype.render = function() {
 };
 
 // This class handles all the enemies logic (e.g., spawning)
-var Enemies = function(minSpeed = 50, maxSpeed = 100) {
+var Enemies = function(minSpeed = MIN_EN_SPEED, maxSpeed = MAX_EN_SPEED) {
 
   this.minSpeed = minSpeed;
   this.maxSpeed = maxSpeed;
   this.yPositions = [60, 143, 226];
   this.num = this.yPositions.length;
+};
+
+// Resets the enemies speed range
+Enemies.prototype.resetSpeed = function () {
+
+  this.minSpeed = MIN_EN_SPEED;
+  this.maxSpeed = MAX_EN_SPEED;
 };
 
 Enemies.prototype.addEnemies = function () {
@@ -99,7 +108,7 @@ Enemies.prototype.addEnemies = function () {
     var yPos = getRndValue(yPositions, true);
     var speed = getRndInteger(this.minSpeed, this.maxSpeed);
 
-    allEnemies.push(new Enemy(-101, yPos, speed));
+    allEnemies.push(new Enemy(-101, yPos, speed)); // <-----
   }
 };
 
@@ -190,6 +199,10 @@ Player.prototype.handleInput = function (key) {
                   // If he presses twice, the game resumes
     case 'space': game.isPaused = game.isPaused ? false : true;
                   break;
+
+    case 'restart': game.restart();
+                    allEnemies = [];
+                    break;
   }
 };
 
@@ -315,6 +328,21 @@ Game.prototype.showScoreboard = function () {
   ctx.fillText(this.score, 420, 30);
 };
 
+// Restarts the game (initializes all
+// of the game variables and attributes)
+Game.prototype.restart = function () {
+
+  this.level = 1;
+  this.lives = 5;
+  this.score = 0;
+  this.bonus = 0;
+
+  player.reset();
+  enemies.resetSpeed();
+
+  this.paused = false;
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -334,7 +362,8 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        32: 'space'
+        32: 'space',
+        82: 'restart'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
