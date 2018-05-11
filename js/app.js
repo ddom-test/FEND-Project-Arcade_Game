@@ -304,6 +304,8 @@ Game.prototype.over = function () {
     ctx.font = "bold 1.6em serif";
     ctx.fillText("Your score is: " +this.score, 10, 300);
     ctx.fillText("Best level: " +this.level, 10, 340);
+    ctx.font = "1.3em serif";
+    ctx.fillText("Press 'r' to restart the game", 10, 440);
   }
 };
 
