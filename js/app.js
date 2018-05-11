@@ -195,11 +195,6 @@ Player.prototype.handleInput = function (key) {
     case 'down': this.yPos += 83;
                  break;
 
-                  // If the player presses the 'space' key, the game pauses
-                  // If he presses twice, the game resumes
-    case 'pause': game.isPaused = game.isPaused ? false : true;
-                  break;
-
     case 'restart': game.restart();
                     break;
   }
@@ -341,7 +336,15 @@ Game.prototype.restart = function () {
   allEnemies = [];
 
   enemies.addEnemies();
-  this.paused = false;
+  this.isPaused = false;
+};
+
+// Pauses the game
+Game.prototype.pause = function () {
+
+  // If the player presses the 'space' key, the game pauses
+  // If he presses twice, the game resumes
+  game.isPaused = game.isPaused ? false : true;
 };
 
 // Now instantiate your objects.
@@ -367,8 +370,15 @@ document.addEventListener('keyup', function(e) {
         82: 'restart'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
-    game.incrScore((allowedKeys[e.keyCode]));
+    // Bug fixing: if the game is paused, the player cannot 'move' and increase
+    // its score. He only can pause/unpause or restart the game
+    if (allowedKeys[e.keyCode] === 'pause') game.pause();
+
+    if (!game.isPaused || (allowedKeys[e.keyCode] === 'restart')) {
+
+      player.handleInput(allowedKeys[e.keyCode]);
+      game.incrScore((allowedKeys[e.keyCode]));
+    }
 });
 
 
