@@ -17,11 +17,10 @@ The aim of the game is to get to the water without being hit by enemies.
 
 * The player begins with 5 lives. When they get to zero, the game ends.
 * As the level increases, the difficulty increases.
-* The player uses to keyboard to move his character up, down, left and right
-* The player can restart the game hitting the 'r' key on the keyboard
-* The game can be paused by pressing the space key
+* The player uses the keyboard to move his character up, down, left and right.
+* The player can restart the game hitting the 'r' key on the keyboard.
+* The game can be paused by pressing the spacebar key.
 
-The game ends once all cards have been correctly matched. <br/>
 
 
 ## Version
