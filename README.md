@@ -1,4 +1,4 @@
-# Memory Game Project
+# Classic Arcade Game Project
 
 ## Table of Contents
 
